@@ -2,9 +2,17 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const productRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/order");
+
+mongoose.connect(
+  "mongodb+srv://restshop:" +
+  process.env.MONGO_PASSWORD +"@restshop-963aj.gcp.mongodb.net/test?retryWrites=true&w=majority", {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+}).then(()=> console.log("Working"));
 
 app.use(morgan("dev"));
 
@@ -21,6 +29,10 @@ app.use((req, res, next) => {
   }
   next();
 });
+
+
+
+
 
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
